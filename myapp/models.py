@@ -3,6 +3,8 @@
 
 from django.db import models
 from ckeditor.fields import RichTextField
+from django.urls import reverse
+
 
 # Create your models here.
 class Category(models.Model):
@@ -46,6 +48,9 @@ class Product(models.Model):
     categories = models.ManyToManyField(Category, blank=True)
     image = models.ImageField(upload_to='products/', blank=True, null=True)  
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse('product_detail', args=[str(self.id)])
  
     def __str__(self):
         return self.name
@@ -123,6 +128,7 @@ class Commande(models.Model):
     customer_phone = models.CharField(max_length=20)
     customer_address = models.TextField()
     payment = models.CharField(max_length=50, choices=[('livraison', 'Paiement à la livraison')])
+    is_delivered = models.BooleanField(default=False)  # Champ pour indiquer si la commande est livrée
     created_at = models.DateTimeField(auto_now_add=True)
  
     def __str__(self):

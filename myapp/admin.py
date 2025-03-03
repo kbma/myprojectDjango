@@ -117,10 +117,33 @@ class HomePageAdmin(admin.ModelAdmin):
     
 @admin.register(Commande)
 class CommandeAdmin(admin.ModelAdmin):
-    list_display = ('product', 'quantity', 'customer_name', 'customer_email', 'customer_phone')
+    list_display = ('product', 'quantity', 'total_commande','customer_name', 'customer_email', 'customer_phone','created_at', 'payment', 'status_colored','is_delivered')
+    list_editable = ('is_delivered',)  # Rendre le statut modifiable directement
     search_fields = ('customer_name', 'customer_email', 'customer_phone', 'customer_address')
     list_filter = ('customer_name', 'payment')
-    fields = ('product', 'quantity', 'customer_name', 'customer_email', 'customer_phone', 'customer_address', 'payment',)  # Ajouter le graphique ici
+    fields = ('product', 'quantity', 'customer_name', 'customer_email', 'customer_phone', 'customer_address', 'payment','is_delivered')  # Ajouter le graphique ici
     list_per_page = 5
     
-   
+    actions = ['mark_as_delivered']
+
+    def mark_as_delivered(self, request, queryset):
+        """Action pour marquer les commandes sélectionnées comme livrées"""
+        updated_count = queryset.update(is_delivered=True)
+        self.message_user(request, f"{updated_count} commande(s) marquée(s) comme livrée(s).", messages.SUCCESS)
+
+    mark_as_delivered.short_description = "Marquer comme livrée"
+
+
+    def status_colored(self, obj):
+        """Affiche le statut avec une couleur : vert si livré, rouge sinon"""
+        color = "green" if obj.is_delivered else "red"
+        status = "Livrée" if obj.is_delivered else "En attente"
+        return format_html('<span style="color: {}; font-weight: bold;">{}</span>', color, status)
+
+    status_colored.short_description = 'Statut'
+    
+    def total_commande(self, obj):
+        """Calcule le total de la commande"""
+        return obj.quantity * obj.product.price if obj.product and obj.product.price else 0
+
+    total_commande.short_description = 'Total (€)'  # Changer l'affichage du titre

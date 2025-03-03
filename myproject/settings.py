@@ -138,9 +138,15 @@ MEDIA_URL = '/media/'  # URL pour accéder aux fichiers médias
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Dossier où seront stockées les images
 
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 STATIC_URL = '/static/'
-# Dossier où les fichiers statiques sont collectés
-STATIC_ROOT = os.getenv('STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Dossier où les fichiers statiques seront collectés
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Dossier où tu stockes tes fichiers statiques
+]
  
 # Pour servir les fichiers statiques en mode debug désactivé
 STATICFILES_DIRS = [
