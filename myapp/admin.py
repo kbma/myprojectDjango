@@ -4,13 +4,6 @@ from decimal import Decimal
 from django.utils.html import format_html
 from import_export.admin import ImportExportModelAdmin
 from .models import HomePage, Commande
-import io
-import base64
-import matplotlib.pyplot as plt
-import seaborn as sns
-from django.utils.safestring import mark_safe
-from django.db.models.functions import TruncMonth
-from django.db.models import Count
 
 
 # Register your models here.
