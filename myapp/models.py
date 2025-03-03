@@ -1,4 +1,8 @@
+# Description: Ce fichier contient les modèles de données de l'application myapp
+# models.py
+
 from django.db import models
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Category(models.Model):
@@ -88,3 +92,41 @@ class SupplierDetail(models.Model):
     class Meta:
         verbose_name = 'Détail Fournisseur'
         verbose_name_plural = 'Détails Fournisseurs'
+
+
+
+class HomePage(models.Model):
+    site_name = models.CharField(max_length=255)
+    logo = models.ImageField(upload_to='./')
+    welcome_titre = models.CharField(max_length=255)
+    welcome_message = RichTextField()
+    action1_message = models.CharField(max_length=255)
+    action1_lien = models.CharField(max_length=255)
+    action2_message = models.CharField(max_length=255)
+    action2_lien = models.CharField(max_length=255) 
+    contact_message = RichTextField()
+    about_message = RichTextField()
+    footer_message = RichTextField()
+    footer_bouton_message = models.CharField(max_length=255, blank=True, null=True )
+
+    class Meta:
+        verbose_name = 'Page d\'accuiel'
+        verbose_name_plural = 'Pages d\'accueil'
+    def __str__(self):
+        return "Page d'accueil"
+
+class Commande(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    customer_name= models.CharField(max_length=255)
+    customer_email = models.EmailField()
+    customer_phone = models.CharField(max_length=20)
+    customer_address = models.TextField()
+    payment = models.CharField(max_length=50, choices=[('livraison', 'Paiement à la livraison')])
+    created_at = models.DateTimeField(auto_now_add=True)
+ 
+    def __str__(self):
+        return f"Commande {self.id} - {self.customer_name}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)

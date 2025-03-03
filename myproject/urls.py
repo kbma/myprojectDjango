@@ -18,10 +18,17 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from myapp.views import home
+from myapp.views import commande,commande_confirmation
+from myapp.views import generate_pdf
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',home,name='home'),
+    path('commande/<int:product_id>/', commande, name='commande'),
+    path('commande-confirmation/<int:commande_id>/', commande_confirmation, name='commande_confirmation'),
+    path('commande-confirmation-pdf/<int:commande_id>/', generate_pdf, name='generate_pdf'),
 ]
 
 if settings.DEBUG:
