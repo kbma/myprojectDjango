@@ -47,3 +47,4 @@ sqlparse==0.5.3
 tablib==3.8.0
 tzdata==2024.2
 urllib3==2.3.0
+whitenoise==6.9.0
