@@ -139,7 +139,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Dossier où seront stockées les
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Dossier où les fichiers statiques sont collectés
+STATIC_ROOT = os.getenv('STATIC_ROOT', os.path.join(BASE_DIR, 'staticfiles'))
  
 # Pour servir les fichiers statiques en mode debug désactivé
 STATICFILES_DIRS = [
